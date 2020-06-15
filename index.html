@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>Todo App</h1>
+        <input type="text" v-model="inputText" v-on:keyup.enter='addItem'>
+        <!-- <div>{{ todoItems }}</div> -->
+        <button v-on:click='fetchItems'>add</button>
+        <ul>
+            <li v-for="(todoItem, index) in todoItems">
+                {{ todoItem }}
+                <button v-on:click="removeItem(todoItem, index)">
+                    remove
+                </button>
+            </li>        
+        </ul>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            inputText: '',
+            todoItems: []
+        },
+        created: function(){
+            this.fetchItems()
+        },
+        methods: {
+            addItem: function(event){
+                console.log(event)
+                // if (event.keyCode === 13) {
+                var value = this.inputText
+                localStorage.setItem(value, value)
+                this.inputText = ''    
+                // }
+                // console.log('add')
+                // axios.post('주소', this.inputText)
+            },
+            fetchItems: function(){
+                // axios.get('/todos')
+                for (var i=0;i< localStorage.length;i++){
+                    var value = localStorage.key(i)
+                    console.log(value);
+                    this.todoItems.push(value)
+                }
+            },
+            removeItem: function(todoItem, index) {
+                console.log(todoItem, index);
+                this.todoItems.splice(index, 1);
+                localStorage.removeItem(todoItem);
+            }
+        }
+    })
+</script>
+</body>
+</html>
